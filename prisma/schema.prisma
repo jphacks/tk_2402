@@ -13,15 +13,14 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -41,6 +40,9 @@ model Book {
   saleability  Boolean
   buyLink      String
   description  String
+  preview      Boolean
+  previewLink  String
+  Review       Review[]
   userBook     userBook[]
 }
 
@@ -60,6 +62,7 @@ model User {
   image         String?
   public        Boolean      @default(false)
   accounts      Account[]
+  Review        Review[]
   sessions      Session[]
   gameResult    gameResult[]
   userBook      userBook[]
@@ -69,7 +72,6 @@ model userBook {
   id        Int      @id @default(autoincrement())
   userid    String
   bookid    String
-  content   String
   timestamp DateTime @db.Date
   Book      Book     @relation(fields: [bookid], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userid], references: [id], onDelete: Cascade)
@@ -81,4 +83,13 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  userid    String
+  bookid    String
+  createdAt DateTime @db.Date
+  Book      Book     @relation(fields: [bookid], references: [id], onDelete: Cascade)
+  User      User     @relation(fields: [userid], references: [id], onDelete: Cascade)
 }

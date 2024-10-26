@@ -45,7 +45,7 @@ export default function Result({ score, books, userId, onReset }: ResultProps) {
           <div className="flex gap-4">
             <Button
               onClick={() => {
-                onReset(); // リセット処理を実行
+                onReset();
               }}
               className="mt-4 bg-green-500 text-white mb-6 py-2 px-4 rounded"
             >
@@ -67,6 +67,7 @@ export default function Result({ score, books, userId, onReset }: ResultProps) {
         <div className="max-h-[400px] overflow-y-auto">
           {books.map((book) => {
             const isFavorite = favoriteBooks.includes(book.id);
+            const preview = Boolean(book.volumeInfo); // previewが存在するか確認
 
             return (
               <div key={book.id} className="mb-4 p-4 border rounded">
@@ -82,6 +83,8 @@ export default function Result({ score, books, userId, onReset }: ResultProps) {
                       buyLink: book.saleInfo?.buyLink || "",
                       description:
                         book.volumeInfo.description || "説明がありません。",
+                      preview, // previewプロパティを追加
+                      previewLink: book.volumeInfo.previewLink
                     }}
                     isFavorite={isFavorite}
                   />
@@ -106,13 +109,23 @@ export default function Result({ score, books, userId, onReset }: ResultProps) {
                   </p>
                 </div>
                 <div className="w-full text-right">
+                  {preview && book.volumeInfo.previewLink && (
+                    <a
+                      href={book.volumeInfo.previewLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500"
+                    >
+                      プレビューを見る
+                    </a>
+                  )}
                   {book.saleInfo?.saleability === "FOR_SALE" &&
                     book.saleInfo?.buyLink && (
                       <a
                         href={book.saleInfo.buyLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-500"
+                        className="text-blue-500 ml-4"
                       >
                         購入リンク
                       </a>

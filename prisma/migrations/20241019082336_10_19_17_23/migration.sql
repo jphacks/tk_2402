@@ -4,6 +4,8 @@ CREATE TABLE "Book" (
     "thumbnailURL" TEXT NOT NULL,
     "saleability" BOOLEAN NOT NULL,
     "buyLink" TEXT NOT NULL,
+    "preview" BOOLEAN NOT NULL,
+    "previewLink" TEXT NOT NULL,
     "description" TEXT NOT NULL,
 
     CONSTRAINT "Book_pkey" PRIMARY KEY ("id")

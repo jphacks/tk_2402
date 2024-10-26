@@ -41,6 +41,8 @@ const MyLikes = async () => {
                         thumbnailURL: book.Book.thumbnailURL || "",
                         saleability: book.Book.saleability === true,
                         buyLink: book.Book.buyLink || "",
+                        preview: book.Book.preview === true,
+                        previewLink: book.Book.previewLink,
                         description:
                           book.Book.description || "説明がありません。",
                       }}

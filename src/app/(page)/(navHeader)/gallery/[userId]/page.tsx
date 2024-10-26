@@ -58,6 +58,8 @@ const UserBookshelf = async ({ params }: { params: { userId: string } }) => {
                         thumbnailURL: userBook.Book.thumbnailURL || "",
                         saleability: userBook.Book.saleability === true,
                         buyLink: userBook.Book.buyLink || "",
+                        preview: userBook.Book.preview === true,
+                        previewLink: userBook.Book.previewLink,
                         description:
                           userBook.Book.description || "説明がありません。",
                       }}

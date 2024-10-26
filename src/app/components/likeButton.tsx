@@ -13,6 +13,8 @@ interface LikeButtonProps {
     saleability: boolean;
     buyLink: string;
     description: string;
+    preview: boolean;
+    previewLink: string;
   };
   isFavorite: boolean;
 }

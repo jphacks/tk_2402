@@ -20,6 +20,8 @@ export async function toggleFavorite(userId: string, bookId: string, bookData: a
           thumbnailURL: bookData.thumbnailURL,
           saleability: bookData.saleability,
           buyLink: bookData.buyLink,
+          preview: bookData.preview,
+          previewLink: bookData.previewLink,
           description: bookData.description,
         },
       });
@@ -42,7 +44,6 @@ export async function toggleFavorite(userId: string, bookId: string, bookData: a
         data: {
           userid: userId,
           bookid: bookId,
-          content: 'お気に入り登録',
           timestamp: new Date(),
         },
       });

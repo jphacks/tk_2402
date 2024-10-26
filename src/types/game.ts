@@ -3,6 +3,8 @@ export interface Book {
     volumeInfo: {
       title: string;
       description?: string;
+      preview: boolean;
+      previewLink: string;
       imageLinks?: {
         smallThumbnail: string;
       };

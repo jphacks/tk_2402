@@ -39,6 +39,7 @@
 #### API・データ
 * Google Books APIs
 * PostgreSQL
+* さくらのVPNを活用したサーバの構築
 
 #### フレームワーク・ライブラリ・モジュール
 * Next.js

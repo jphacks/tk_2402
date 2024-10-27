@@ -7,6 +7,7 @@ import ReviewButton from "@/app/components/mylikes/ReviewButton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { HiOutlineShoppingCart } from "react-icons/hi";
+import { IoMdSearch } from "react-icons/io";
 
 const MyLikes = async () => {
   const session = await auth();
@@ -95,8 +96,21 @@ const MyLikes = async () => {
                   <p className="mb-2">
                     {book.Book.description?.replace(/<wbr>/g, "")}
                   </p>
-                  {book.Book.saleability === true && book.Book.buyLink && (
-                    <div className="text-right">
+                  <div className="gap-2 flex justify-end mb-2">
+                    {book.Book.previewLink && (
+                      <Button className="rounded bg-stone-700">
+                        <Link
+                          href={book.Book.previewLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1"
+                        >
+                          <IoMdSearch />
+                          プレビュー
+                        </Link>
+                      </Button>
+                    )}
+                    {book.Book.saleability === true && book.Book.buyLink && (
                       <Button className="rounded bg-stone-700 mb-2">
                         <Link
                           href={book.Book.buyLink}
@@ -108,8 +122,8 @@ const MyLikes = async () => {
                           購入リンク
                         </Link>
                       </Button>
-                    </div>
-                  )}
+                    )}
+                  </div>
                   <hr />
                   <div>
                     <p className="font-semibold">レビュー</p>

@@ -5,6 +5,7 @@ import LikeButton from "@/app/components/likeButton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { HiOutlineShoppingCart } from "react-icons/hi";
+import { IoMdSearch } from "react-icons/io";
 
 const UserBookshelf = async ({ params }: { params: { userId: string } }) => {
   const session = await auth();
@@ -113,19 +114,34 @@ const UserBookshelf = async ({ params }: { params: { userId: string } }) => {
                   <p className="mb-2">
                     {userBook.Book.description.replace(/<wbr>/g, "")}
                   </p>
-                  {userBook.Book.saleability && userBook.Book.buyLink && (
-                    <Button className="rounded bg-stone-700 text-right">
-                      <Link
-                        href={userBook.Book.buyLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-white flex items-center gap-1"
-                      >
-                        <HiOutlineShoppingCart />
-                        購入リンク
-                      </Link>
-                    </Button>
-                  )}
+                  <div className="flex justify-end gap-2 mb-2">
+                    {userBook.Book.previewLink && (
+                      <Button className="rounded bg-stone-700">
+                        <Link
+                          href={userBook.Book.previewLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1"
+                        >
+                          <IoMdSearch />
+                          プレビュー
+                        </Link>
+                      </Button>
+                    )}
+                    {userBook.Book.saleability && userBook.Book.buyLink && (
+                      <Button className="rounded bg-stone-700 text-right">
+                        <Link
+                          href={userBook.Book.buyLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-white flex items-center gap-1"
+                        >
+                          <HiOutlineShoppingCart />
+                          購入リンク
+                        </Link>
+                      </Button>
+                    )}
+                  </div>
                   <hr />
                   <div>
                     <p className="font-semibold">レビュー</p>

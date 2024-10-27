@@ -69,7 +69,7 @@ export default function Result({ score, books, userId, onReset }: ResultProps) {
         <div className="max-h-[400px] overflow-y-auto">
           {books.map((book) => {
             const isFavorite = favoriteBooks.includes(book.id);
-            const preview = Boolean(book.volumeInfo); // previewが存在するか確認
+            const preview = Boolean(book.volumeInfo.preview); // previewが存在するか確認
 
             return (
               <div key={book.id} className="mb-4 p-4 rounded">

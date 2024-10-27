@@ -14,6 +14,7 @@ const Gallery = async () => {
         some: {}
       }
     },
+    take: 3, // 本の取得数を3冊に制限
   });
   
   return (
@@ -59,7 +60,7 @@ const GalleryCard = async ({
   })
   return (
     <Link href={`/gallery/${userId}`}>
-      <div className="border p-4 rounded shadow-md cursor-pointer bg-white">
+      <div className="p-4 rounded shadow-md cursor-pointer bg-stone-600">
         <div className="flex items-center mb-4">
           <Image
             src={userPhotoURL}
@@ -68,7 +69,7 @@ const GalleryCard = async ({
             height={40}
             className="rounded-full"
           />
-          <h2 className="text-lg font-semibold ml-3">{userName}</h2>
+          <h2 className="text-lg font-semibold ml-3 text-white">{userName}</h2>
         </div>
         <div className="grid grid-cols-3 gap-2">
           {fetchUserBooks.map((book) => (

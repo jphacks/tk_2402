@@ -2,6 +2,9 @@ import Image from "next/image";
 import { prisma } from "../../../../../../prisma/client";
 import { auth } from "@/lib/auth";
 import LikeButton from "@/app/components/likeButton";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { HiOutlineShoppingCart } from "react-icons/hi";
 
 const UserBookshelf = async ({ params }: { params: { userId: string } }) => {
   const session = await auth();
@@ -19,8 +22,33 @@ const UserBookshelf = async ({ params }: { params: { userId: string } }) => {
       Book: true,
       user: true,
     },
-    take: 3, // 本の取得数を3冊に制限
   });
+
+  // 各本のIDに関連するレビューを取得
+  const bookIds = userBooks.map((book) => book.bookid);
+  const reviews = await prisma.review.findMany({
+    where: {
+      bookid: { in: bookIds },
+    },
+    include: {
+      user: true, // レビューを書いたユーザー情報を取得
+    },
+  });
+
+  // 型定義
+  type ReviewGroupedByBookId = {
+    [key: string]: (typeof reviews)[0][];
+  };
+
+  // 本ごとに関連するレビューをグループ化
+  const reviewsByBookId: ReviewGroupedByBookId = reviews.reduce(
+    (acc, review) => {
+      if (!acc[review.bookid]) acc[review.bookid] = [];
+      acc[review.bookid].push(review);
+      return acc;
+    },
+    {} as ReviewGroupedByBookId
+  );
 
   const myFavoriteBooks = await prisma.userBook.findMany({
     where: { userid: currentUserId },
@@ -47,7 +75,7 @@ const UserBookshelf = async ({ params }: { params: { userId: string } }) => {
               return (
                 <div
                   key={userBook.id}
-                  className="border overflow-y-scroll h-[400px] p-2 rounded bg-white"
+                  className="overflow-y-scroll h-[400px] p-2 rounded bg-stone-600 text-white"
                 >
                   <div className="flex justify-end">
                     <LikeButton
@@ -86,15 +114,42 @@ const UserBookshelf = async ({ params }: { params: { userId: string } }) => {
                     {userBook.Book.description.replace(/<wbr>/g, "")}
                   </p>
                   {userBook.Book.saleability && userBook.Book.buyLink && (
-                    <a
-                      href={userBook.Book.buyLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500"
-                    >
-                      購入リンク
-                    </a>
+                    <Button className="rounded bg-stone-700 text-right">
+                      <Link
+                        href={userBook.Book.buyLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-white flex items-center gap-1"
+                      >
+                        <HiOutlineShoppingCart />
+                        購入リンク
+                      </Link>
+                    </Button>
                   )}
+                  <hr />
+                  <div>
+                    <p className="font-semibold">レビュー</p>
+                    {reviewsByBookId[userBook.bookid]?.map((review) => (
+                      <div key={review.id} className="mt-2 pt-2">
+                        <div className="flex items-center mb-1">
+                          <Image
+                            src={review.user.image || "/default-avatar.png"}
+                            alt={review.user.name || "User"}
+                            width={32}
+                            height={32}
+                            className="rounded-full mr-2"
+                          />
+                          <p className="font-semibold">
+                            {review.user.name || "匿名ユーザー"}
+                          </p>
+                        </div>
+                        <p className="text-sm mb-2">{review.content}</p>
+                        <p className="text-xs text-gray-200">
+                          {new Date(review.createdAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               );
             })}
